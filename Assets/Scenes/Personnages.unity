@@ -465,7 +465,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 10
   runSpeed: 2
-  turnSpeed: 10
+  turnSpeed: 100
   inputFront: w
   inputBack: s
   inputRight: d
