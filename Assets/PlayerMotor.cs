@@ -1,0 +1,56 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerMotor : MonoBehaviour
+{  //Animations du perso
+  Animation animations;
+  //Vitesse de base
+  public float walkSpeed;
+  public float runSpeed;
+  public float turnSpeed;
+
+  //Inputs
+  public string inputFront;
+  public string inputBack;
+  public string inputRight;
+  public string inputLeft;
+
+  public Vector3 jumpSpeed;
+
+  CapsuleCollider playerCollider;
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+      animations = gameObject.GetComponent<Animation>();
+      playerCollider = gameObject.GetComponent<CapsuleCollider>();
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    { //avancer
+      if (Input.GetKey(inputFront)) {
+        transform.Translate(0,0, walkSpeed * Time.deltaTime);
+        animations.Play("walk");
+      }
+      //reculer
+      if (Input.GetKey(inputBack)) {
+        transform.Translate(0,0, -(walkSpeed/2)* Time.deltaTime);
+        animations.Play("walk");
+
+      }
+      //Tourner a droite
+      if (Input.GetKey(inputRight)) {
+        transform.Rotate(0, turnSpeed * Time.deltaTime,0);
+
+      }
+      //Tourner a gauche
+      if (Input.GetKey(inputLeft)) {
+        transform.Rotate(0, -turnSpeed * Time.deltaTime,0);
+
+      }
+    }
+}
