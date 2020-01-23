@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlayerMotor : MonoBehaviour
 {  //Animations du perso
   Animation animations;
-  //Vitesse de base
+    //Vitesse de base
+
   public float walkSpeed;
   public float runSpeed;
   public float turnSpeed;
@@ -26,22 +27,45 @@ public class PlayerMotor : MonoBehaviour
     {
       animations = gameObject.GetComponent<Animation>();
       playerCollider = gameObject.GetComponent<CapsuleCollider>();
-
     }
-
+    bool IsGrounded()
+    {
+        return Physics.CheckCapsule(playerCollider.bounds.center, new Vector3(playerCollider.bounds.center.x, playerCollider.bounds.min.y - 0.1f, playerCollider.bounds.center.z), 0.5f);
+    }
     // Update is called once per frame
     void Update()
-    { //avancer
-      if (Input.GetKey(inputFront)) {
-        transform.Translate(0,0, walkSpeed * Time.deltaTime);
-        animations.Play("walk");
-      }
-      //reculer
-      if (Input.GetKey(inputBack)) {
-        transform.Translate(0,0, -(walkSpeed/2)* Time.deltaTime);
-        animations.Play("walk");
 
-      }
+    {
+        // Si on n'avance et ne recule pas 
+        if (!Input.GetKey(inputFront) && !Input.GetKey(inputBack))
+        {
+            //animations.Play("idle");
+        }
+
+
+        //avancer
+            if (Input.GetKey(inputFront) && !Input.GetKey(KeyCode.LeftShift)) 
+            {
+                transform.Translate(0,0, walkSpeed * Time.deltaTime);
+                //animations.Play("walk");
+            } 
+            
+         //Pour le sprint
+        if (Input.GetKey(inputFront) && Input.GetKey(KeyCode.LeftShift))
+        {
+            transform.Translate(0, 0, runSpeed * Time.deltaTime);
+           // animations.Play("run");
+        }
+
+        //reculer
+        if (Input.GetKey(inputBack)) 
+        {
+            transform.Translate(0,0, -(walkSpeed/2)* Time.deltaTime);
+            //animations.Play("walk");
+
+        }
+
+
       //Tourner a droite
       if (Input.GetKey(inputRight)) {
         transform.Rotate(0, turnSpeed * Time.deltaTime,0);
@@ -49,8 +73,19 @@ public class PlayerMotor : MonoBehaviour
       }
       //Tourner a gauche
       if (Input.GetKey(inputLeft)) {
-        transform.Rotate(0, -turnSpeed * Time.deltaTime,0);
+                transform.Rotate(0, -turnSpeed * Time.deltaTime,0);
 
       }
+        // Si on saute
+        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
+        {
+            // Preparation du saut 
+            Vector3 v = gameObject.GetComponent<Rigidbody>().velocity;
+            v.y = jumpSpeed.y;
+
+            // Saut
+            gameObject.GetComponent<Rigidbody>().velocity = jumpSpeed;
+        }
     }
+    
 }
