@@ -4,7 +4,6 @@ using UnityEngine;
 
 public static class Noise
 {
-
     public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, float scale)
     {
         float[,] noiseMap = new float[mapWidth, mapHeight];
@@ -14,9 +13,9 @@ public static class Noise
             scale = 0.0001f;
         }
 
-        for (int y = 0 ; y < mapWidth ; y++)
+        for (int y = 0 ; y < mapHeight ; y++)
         {
-            for (int x = 0 ; x < mapHeight ; x++)
+            for (int x = 0 ; x < mapWidth ; x++)
             {
                 float sampleX = x / scale;
                 float sampleY = y / scale;
@@ -25,7 +24,7 @@ public static class Noise
                 noiseMap[x, y] = perlinValue;
             }
         }
+
         return noiseMap;
     }
-
 }
