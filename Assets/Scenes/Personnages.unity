@@ -155,7 +155,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -236, y: -182}
+  m_AnchoredPosition: {x: -236.4, y: -216.4}
   m_SizeDelta: {x: 86.18, y: 83.91}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &39450509
@@ -282,7 +282,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 351153131}
   m_LocalRotation: {x: 0.000838132, y: -0, z: -0, w: 0.99999964}
-  m_LocalPosition: {x: 27.7, y: -0, z: 59.9}
+  m_LocalPosition: {x: 27.7, y: 1, z: 59.9}
   m_LocalScale: {x: -3.3338323, y: 4.1275916, z: 6.210553}
   m_Children: []
   m_Father: {fileID: 0}
@@ -404,8 +404,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -0.40000153, y: -0.50276}
-  m_SizeDelta: {x: 173.64, y: 20}
+  m_AnchoredPosition: {x: -0.5, y: -0.50276}
+  m_SizeDelta: {x: 119.47, y: 20}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &516344833
 MonoBehaviour:
@@ -602,7 +602,7 @@ GameObject:
   - component: {fileID: 583177472}
   - component: {fileID: 583177471}
   - component: {fileID: 583177470}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -864,8 +864,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -1.1000366, y: -0.50276}
-  m_SizeDelta: {x: 173.64, y: 20}
+  m_AnchoredPosition: {x: -1.1000328, y: -0.50276}
+  m_SizeDelta: {x: 119.47, y: 20}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &890015161
 MonoBehaviour:
@@ -1171,8 +1171,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 243.35, y: 64}
-  m_SizeDelta: {x: 173.64, y: 20}
+  m_AnchoredPosition: {x: 145.81, y: 29.7}
+  m_SizeDelta: {x: 118.79, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1244983722
 MonoBehaviour:
@@ -1227,7 +1227,7 @@ GameObject:
   - component: {fileID: 1351523251}
   - component: {fileID: 1351523250}
   - component: {fileID: 1351523252}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1520,8 +1520,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 243.91, y: 46.19998}
-  m_SizeDelta: {x: 173.64, y: 20}
+  m_AnchoredPosition: {x: 146.2, y: 8.899979}
+  m_SizeDelta: {x: 118.79, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1741006968
 MonoBehaviour:

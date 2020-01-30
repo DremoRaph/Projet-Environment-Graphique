@@ -26,16 +26,17 @@ public class EnenyController : MonoBehaviour
     {
         float distancePlayer = Vector3.Distance(targetPlayer.position, transform.position);
         float distanceHeart = Vector3.Distance(targetHeart.position, transform.position);
-        if (distancePlayer <= lookRadiusPlayer)
+        if (distancePlayer <= lookRadiusPlayer && distancePlayer <= distanceHeart)
         {
             agent.SetDestination(targetPlayer.position);
             Debug.Log(targetPlayer);
         }
-        if (distancePlayer <= agent.stoppingDistance)
+        else if (distancePlayer <= agent.stoppingDistance)
         {
             FaceTargetPlayer();
         }
-        if (distanceHeart <= distancePlayer)
+
+        else
         {
             agent.SetDestination(targetHeart.position);
             FaceTargetHeart();

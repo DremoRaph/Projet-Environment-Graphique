@@ -30,7 +30,7 @@ public class PlayerMotor : MonoBehaviour
     }
     bool IsGrounded()
     {
-        return Physics.CheckCapsule(playerCollider.bounds.center, new Vector3(playerCollider.bounds.center.x, playerCollider.bounds.min.y - 0.1f, playerCollider.bounds.center.z), 0.5f);
+        return Physics.CheckCapsule(playerCollider.bounds.center, new Vector3(playerCollider.bounds.center.x, playerCollider.bounds.min.y - 0.1f, playerCollider.bounds.center.z), 0.5f, layerMask:3);
     }
     // Update is called once per frame
     void Update()
