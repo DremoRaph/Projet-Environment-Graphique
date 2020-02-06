@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMotor : MonoBehaviour
 {  //Animations du perso
-  Animation animations;
+    Animator animator;
     //Vitesse de base
 
   public float walkSpeed;
@@ -16,7 +16,6 @@ public class PlayerMotor : MonoBehaviour
   public string inputBack;
   public string inputRight;
   public string inputLeft;
-
   public Vector3 jumpSpeed;
 
   CapsuleCollider playerCollider;
@@ -25,8 +24,9 @@ public class PlayerMotor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-      animations = gameObject.GetComponent<Animation>();
+      animator = gameObject.GetComponent<Animator>();
       playerCollider = gameObject.GetComponent<CapsuleCollider>();
+
     }
     bool IsGrounded()
     {
@@ -39,7 +39,8 @@ public class PlayerMotor : MonoBehaviour
         // Si on n'avance et ne recule pas 
         if (!Input.GetKey(inputFront) && !Input.GetKey(inputBack))
         {
-            //animations.Play("idle");
+           // animator.SetFloat("vertical", 0);
+            //animator.SetFloat("horizontal", 0);
         }
 
 
@@ -47,7 +48,8 @@ public class PlayerMotor : MonoBehaviour
             if (Input.GetKey(inputFront) && !Input.GetKey(KeyCode.LeftShift)) 
             {
                 transform.Translate(0,0, walkSpeed * Time.deltaTime);
-                //animations.Play("walk");
+
+                animator.SetFloat("vertical", 1);
             } 
             
          //Pour le sprint
@@ -61,7 +63,7 @@ public class PlayerMotor : MonoBehaviour
         if (Input.GetKey(inputBack)) 
         {
             transform.Translate(0,0, -(walkSpeed/2)* Time.deltaTime);
-            //animations.Play("walk");
+            animator.Play("Walk");
 
         }
 
