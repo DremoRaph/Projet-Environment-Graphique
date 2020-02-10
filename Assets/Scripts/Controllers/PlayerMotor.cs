@@ -36,11 +36,13 @@ public class PlayerMotor : MonoBehaviour
     void Update()
 
     {
+        animator.SetBool("IsRunning", false);
+        animator.SetBool("IsJumping", false);
         // Si on n'avance et ne recule pas 
         if (!Input.GetKey(inputFront) && !Input.GetKey(inputBack))
         {
-           // animator.SetFloat("vertical", 0);
-            //animator.SetFloat("horizontal", 0);
+           animator.SetFloat("vertical", 0);
+           animator.SetFloat("horizontal", 0);
         }
 
 
@@ -56,14 +58,15 @@ public class PlayerMotor : MonoBehaviour
         if (Input.GetKey(inputFront) && Input.GetKey(KeyCode.LeftShift))
         {
             transform.Translate(0, 0, runSpeed * Time.deltaTime);
-           // animations.Play("run");
+            animator.SetBool("IsRunning", true);
         }
 
         //reculer
         if (Input.GetKey(inputBack)) 
         {
             transform.Translate(0,0, -(walkSpeed/2)* Time.deltaTime);
-            animator.Play("Walk");
+            animator.SetFloat("horizontal",2);
+            animator.SetFloat("vertical", 1);
 
         }
 
@@ -71,13 +74,18 @@ public class PlayerMotor : MonoBehaviour
       //Tourner a droite
       if (Input.GetKey(inputRight)) {
         transform.Rotate(0, turnSpeed * Time.deltaTime,0);
+            animator.SetFloat("vertical", 1);
+            animator.SetFloat("horizontal", 1);
 
       }
       //Tourner a gauche
       if (Input.GetKey(inputLeft)) {
                 transform.Rotate(0, -turnSpeed * Time.deltaTime,0);
+                animator.SetFloat("vertical", 1);
+                animator.SetFloat("horizontal", -1);
 
-      }
+
+        }
         // Si on saute
         if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
         {
@@ -87,6 +95,7 @@ public class PlayerMotor : MonoBehaviour
 
             // Saut
             gameObject.GetComponent<Rigidbody>().velocity = jumpSpeed;
+            animator.SetBool("IsJumping", true);
         }
     }
     
