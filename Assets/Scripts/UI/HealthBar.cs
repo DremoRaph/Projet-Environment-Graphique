@@ -16,7 +16,7 @@ public class HealthBar : MonoBehaviour
     private void UpdateHPBar()
     {
         float ration = hitpoint / maxHitPoint;
-        HPBar.rectTransform.localScale = new Vector3(ration, 1, 1);
+       // HPBar.rectTransform.localScale = new Vector3(ration, 1, 1);
     }
 
     private void TakeDamage( float damage)

@@ -7,48 +7,36 @@ public class PlayerCombat : MonoBehaviour
     public float attackRange = 1f;
     public BoxCollider playerWeapon;
     public GameObject Pivot;
-    private bool isAttacking;
-    bool isDamaging = true;
     public float damage;
-   CapsuleCollider playerCollider;
+    Animator animator;
+   public BoxCollider Weapon;
+    bool isAttacking;
     private void Start()
-    {
-        playerCollider = gameObject.GetComponent<CapsuleCollider>();
+    {   
+        animator = gameObject.GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         if (Input.GetMouseButtonDown(0))
         {
-            isAttacking = true;
-           
-        }
+            animator.SetTrigger("isAttacking");
+        
 
-        if (isAttacking)
+        }
+        if (Input.GetMouseButtonDown(1))
         {
-            float degree = 0f;
-
-            if (isAttacking)
-            {
-
-                if (Mathf.Rad2Deg * Pivot.transform.localRotation.y <= -57f)
-                {
-                    isAttacking = false;
-                    Pivot.transform.localEulerAngles = new Vector3(0, playerCollider.transform.rotation.y, 0);
-
-                }
-                else
-                {
-                    degree -= attackDuration * Time.deltaTime;
-                    Pivot.transform.Rotate(0, degree, 0, Space.Self);
-                    
-                }
-            }
-          
-           
+            animator.SetTrigger("HighSpin");
         }
-      
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            animator.SetTrigger("IsCasting");
+        }
+     
+
+     
     }
     private void OnTriggerEnter(Collider col)
     {
