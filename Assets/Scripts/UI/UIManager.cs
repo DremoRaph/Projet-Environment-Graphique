@@ -1,46 +1,51 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    Text textGoldAvailable;
-    Text textSearchAvailable;
+    GameObject startMenuCanvas;
+    GameObject loadingCanvas;
+    GameObject inGameCanvas;
+
+    public enum GameState { START, LOADING, INGAME };
 
     [SerializeField]
-    int valueGoldAvailable;
-    [SerializeField]
-    int valueSearchAvailable;
+    GameState currentGameState;
 
-
-
-    // Start is called before the first frame update
     void Start()
     {
-        textGoldAvailable = transform.Find("Canvas/Fond_ressource/Gold/Value").GetComponent<Text>();
-        textSearchAvailable = transform.Find("Canvas/Fond_ressource/Search/Value").GetComponent<Text>();       
+        startMenuCanvas = transform.Find("Start_Menu_Canvas").gameObject;
+        loadingCanvas = transform.Find("Loading_Canvas").gameObject;
+        inGameCanvas = transform.Find("In_Game_Canvas").gameObject;
+        changeActiveUI();
     }
 
-    // Update is called once per frame
-    void Update()
+    void changeActiveUI()
     {
-        UpdateRessoucesDisplay();
+
+        switch (currentGameState)
+        {
+            case GameState.START:
+                startMenuCanvas.SetActive(true);
+                loadingCanvas.SetActive(false);
+                inGameCanvas.SetActive(false);
+                break;
+            case GameState.LOADING:
+                startMenuCanvas.SetActive(false);
+                loadingCanvas.SetActive(true);
+                inGameCanvas.SetActive(false);
+                break;
+            case GameState.INGAME:
+                startMenuCanvas.SetActive(false);
+                loadingCanvas.SetActive(false);
+                inGameCanvas.SetActive(true);
+                break;
+        }
     }
 
-    void UpdateRessoucesDisplay()
+    void setCurrentGameState(GameState newGameState)
     {
-        textGoldAvailable.text = valueGoldAvailable.ToString();
-        textSearchAvailable.text = valueSearchAvailable.ToString();
+        this.currentGameState = newGameState;
+        changeActiveUI();
     }
 
-    void setValueGoldAvailable(int goldValue)
-    {
-        this.valueGoldAvailable = goldValue;
-    }
-
-    void setValueSearchAvailable(int SearchValue)
-    {
-        this.valueSearchAvailable = SearchValue;
-    }
 }
