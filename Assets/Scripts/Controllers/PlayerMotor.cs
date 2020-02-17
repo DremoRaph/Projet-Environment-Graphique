@@ -11,6 +11,7 @@ public class PlayerMotor : MonoBehaviour
   public float runSpeed;
   public float turnSpeed;
 
+
   //Inputs
   public string inputFront;
   public string inputBack;
@@ -18,7 +19,7 @@ public class PlayerMotor : MonoBehaviour
   public string inputLeft;
   public Vector3 jumpSpeed;
 
-  CapsuleCollider playerCollider;
+    CapsuleCollider playerCollider;
 
 
     // Start is called before the first frame update

@@ -11,7 +11,9 @@ public class EnenyController : MonoBehaviour
     public float lookRadiusPlayer = 5f;
     NavMeshAgent agent;
     // Start is called before the first frame update
-
+    private float hitpoint = 100;
+    private float maxHitPoint = 100;
+    
     void Start()
     {
         targetPlayer = PlayerManager.instance.player.transform;
@@ -58,5 +60,24 @@ public class EnenyController : MonoBehaviour
         Vector3 direction = (targetHeart.position - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+    }
+    private void TakeDamage(float damage)
+    {
+        hitpoint -= damage;
+        if (hitpoint <= 0)
+        {
+            hitpoint = 0;
+            Destroy(gameObject);
+        }
+
+    }
+
+    private void HealDamage(float heal)
+    {
+        hitpoint += heal;
+        if (hitpoint > maxHitPoint)
+        {
+            hitpoint = maxHitPoint;
+        }
     }
 }
