@@ -1,9 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class LoadingUI : MonoBehaviour
 {
+
+    [SerializeField]
+    Image loadingBarFill;
+    [SerializeField]
+    int valueLoadingBarFill;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -13,6 +18,6 @@ public class LoadingUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        loadingBarFill.fillAmount = (float) valueLoadingBarFill / 100;
     }
 }
