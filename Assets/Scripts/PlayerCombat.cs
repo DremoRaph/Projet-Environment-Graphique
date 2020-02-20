@@ -33,11 +33,22 @@ public class PlayerCombat : MonoBehaviour
 
 
     }
-
+    private bool hasCollide = false;
     private void OnTriggerEnter(Collider col)
     {
+
         if (col.tag == "Enemy")
-            col.SendMessage("TakeDamage",damage);
+        {
+            if (hasCollide == false)
+            {
+                hasCollide = true;
+                col.SendMessage("TakeDamage", damage);
+            }
+        }
+    }
+    private void LateUpdate()
+    {
+        hasCollide = false;
     }
 }
 
