@@ -37,7 +37,7 @@ public class EnenyController : MonoBehaviour
     {
         if (!Dead)
         {
-            float distancePlayer = Vector3.Distance(targetPlayer.position, transform.position);
+            float distancePlayer = PlayerManager.instance.player==null? float.PositiveInfinity: Vector3.Distance(targetPlayer.position, transform.position);
             float distanceHeart = Vector3.Distance(targetHeart.ClosestPoint(this.transform.position), this.transform.position);
             if (distancePlayer <= lookRadiusPlayer && distancePlayer <= distanceHeart && PlayerManager.instance.player.tag=="Player")
             {

@@ -31,17 +31,18 @@ public class PlayerMotor : MonoBehaviour
     public int noOfClicks = 0;
     float lastClickedTime = 0;
     public float maxComboDelay = 1.2f;
+    public GameObject RespawnPoint;
     public float TimeToRespawn = 10f;
     public float TimeToRespawnReset = 10f;
-    public GameObject RespawnPoint;
 
 
 
     // Start is called before the first frame update
     void Start()
     {
-      animator = gameObject.GetComponent<Animator>();
-      playerCollider = gameObject.GetComponent<CapsuleCollider>();
+        
+        animator = gameObject.GetComponent<Animator>();
+        playerCollider = gameObject.GetComponent<CapsuleCollider>();
 
     }
     bool IsGrounded()
@@ -113,7 +114,7 @@ public class PlayerMotor : MonoBehaviour
 
                 // Saut
                 gameObject.GetComponent<Rigidbody>().velocity = jumpSpeed;
-                animator.SetBool("IsJumping", true);
+                animator.SetTrigger("IsJumping");
             }
             if (Input.GetMouseButtonDown(0))
             {
@@ -139,11 +140,14 @@ public class PlayerMotor : MonoBehaviour
         }
         else
         {
-            TimeToRespawn -= Time.deltaTime;
-            if (TimeToRespawn <= 0.0f)
+            if (Dead)
             {
-                Instantiate(PlayerManager.instance.player, RespawnPoint.transform);
-                Destroy(this);
+                TimeToRespawn -= Time.deltaTime;
+                if (TimeToRespawn <= 0.0f)
+                {
+
+                    EventRevive();
+                }
             }
         }
     }
@@ -155,8 +159,7 @@ public class PlayerMotor : MonoBehaviour
             {
                 hitpoint = 0;
                 animator.SetTrigger("Death");
-            this.GetComponent<Rigidbody>().useGravity = false;
-            playerCollider.isTrigger = true;
+            
 
 
             }
@@ -165,6 +168,19 @@ public class PlayerMotor : MonoBehaviour
     {
         Dead = true;
         this.tag = "Untagged";
+        this.GetComponent<Rigidbody>().useGravity = false;
+        playerCollider.isTrigger = true;
+    }
+    private void EventRevive()
+    {
+        Dead = false;
+        hitpoint = maxHitPoint;
+        this.tag = "Player";
+        this.GetComponent<Rigidbody>().useGravity = true;
+        playerCollider.isTrigger = false;
+        this.transform.position = RespawnPoint.transform.position;
+        animator.Play("idle");
+        TimeToRespawn = TimeToRespawnReset;
     }
     private void HealDamage(float heal)
     {
@@ -228,5 +244,8 @@ public class PlayerMotor : MonoBehaviour
     {
         hasCollide = false;
     }
-
+    public bool GetDead()
+    {
+        return this.Dead;
+    }
 }
