@@ -22,6 +22,21 @@ public class PlayerMotor : MonoBehaviour
     CapsuleCollider playerCollider;
 
 
+    public float hitpoint = 100;
+    public float maxHitPoint = 100;
+    bool Dead = false;
+    public BoxCollider playerWeapon;
+    public GameObject Pivot;
+    public float damage;
+    public int noOfClicks = 0;
+    float lastClickedTime = 0;
+    public float maxComboDelay = 1.2f;
+    public float TimeToRespawn = 10f;
+    public float TimeToRespawnReset = 10f;
+    public GameObject RespawnPoint;
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,67 +52,181 @@ public class PlayerMotor : MonoBehaviour
     void Update()
 
     {
-        animator.SetBool("IsRunning", false);
-        animator.SetBool("IsJumping", false);
-        // Si on n'avance et ne recule pas 
-        if (!Input.GetKey(inputFront) && !Input.GetKey(inputBack))
+        if (!Dead)
         {
-           animator.SetFloat("vertical", 0);
-           animator.SetFloat("horizontal", 0);
-        }
-
-
-        //avancer
-            if (Input.GetKey(inputFront) && !Input.GetKey(KeyCode.LeftShift)) 
+            animator.SetBool("IsRunning", false);
+            animator.SetBool("IsJumping", false);
+            // Si on n'avance et ne recule pas 
+            if (!Input.GetKey(inputFront) && !Input.GetKey(inputBack))
             {
-                transform.Translate(0,0, walkSpeed * Time.deltaTime);
+                animator.SetFloat("vertical", 0);
+                animator.SetFloat("horizontal", 0);
+            }
+
+
+            //avancer
+            if (Input.GetKey(inputFront) && !Input.GetKey(KeyCode.LeftShift))
+            {
+                transform.Translate(0, 0, walkSpeed * Time.deltaTime);
 
                 animator.SetFloat("vertical", 1);
-            } 
-            
-         //Pour le sprint
-        if (Input.GetKey(inputFront) && Input.GetKey(KeyCode.LeftShift))
-        {
-            transform.Translate(0, 0, runSpeed * Time.deltaTime);
-            animator.SetBool("IsRunning", true);
-        }
+            }
 
-        //reculer
-        if (Input.GetKey(inputBack)) 
-        {
-            transform.Translate(0,0, -(walkSpeed/2)* Time.deltaTime);
-            animator.SetFloat("horizontal",2);
-            animator.SetFloat("vertical", 1);
+            //Pour le sprint
+            if (Input.GetKey(inputFront) && Input.GetKey(KeyCode.LeftShift))
+            {
+                transform.Translate(0, 0, runSpeed * Time.deltaTime);
+                animator.SetBool("IsRunning", true);
+            }
 
-        }
+            //reculer
+            if (Input.GetKey(inputBack))
+            {
+                transform.Translate(0, 0, -(walkSpeed / 2) * Time.deltaTime);
+                animator.SetFloat("horizontal", 2);
+                animator.SetFloat("vertical", 1);
+
+            }
 
 
-      //Tourner a droite
-      if (Input.GetKey(inputRight)) {
-        transform.Rotate(0, turnSpeed * Time.deltaTime,0);
-            animator.SetFloat("vertical", 1);
-            animator.SetFloat("horizontal", 1);
+            //Tourner a droite
+            if (Input.GetKey(inputRight)) {
+                transform.Rotate(0, turnSpeed * Time.deltaTime, 0);
+                animator.SetFloat("vertical", 1);
+                animator.SetFloat("horizontal", 1);
 
-      }
-      //Tourner a gauche
-      if (Input.GetKey(inputLeft)) {
-                transform.Rotate(0, -turnSpeed * Time.deltaTime,0);
+            }
+            //Tourner a gauche
+            if (Input.GetKey(inputLeft)) {
+                transform.Rotate(0, -turnSpeed * Time.deltaTime, 0);
                 animator.SetFloat("vertical", 1);
                 animator.SetFloat("horizontal", -1);
 
 
-        }
-        // Si on saute
-        if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
-        {
-            // Preparation du saut 
-            Vector3 v = gameObject.GetComponent<Rigidbody>().velocity;
-            v.y = jumpSpeed.y;
+            }
+            // Si on saute
+            if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
+            {
+                // Preparation du saut 
+                Vector3 v = gameObject.GetComponent<Rigidbody>().velocity;
+                v.y = jumpSpeed.y;
 
-            // Saut
-            gameObject.GetComponent<Rigidbody>().velocity = jumpSpeed;
-            animator.SetBool("IsJumping", true);
+                // Saut
+                gameObject.GetComponent<Rigidbody>().velocity = jumpSpeed;
+                animator.SetBool("IsJumping", true);
+            }
+            if (Input.GetMouseButtonDown(0))
+            {
+                lastClickedTime = Time.time;
+                noOfClicks++;
+                if (noOfClicks == 1)
+                {
+                    animator.SetBool("Attack1", true);
+                }
+                noOfClicks = Mathf.Clamp(noOfClicks, 0, 3);
+            }
+
+            if (Input.GetMouseButtonDown(1))
+            {
+
+                animator.SetTrigger("HighSpin");
+            }
+            if (Input.GetKeyDown(KeyCode.H))
+            {
+                animator.SetTrigger("IsCasting");
+            }
+
+        }
+        else
+        {
+            TimeToRespawn -= Time.deltaTime;
+            if (TimeToRespawn <= 0.0f)
+            {
+                Instantiate(PlayerManager.instance.player, RespawnPoint.transform);
+                Destroy(this);
+            }
         }
     }
-    
+    private void TakeDamage(float damage)
+    {
+            hitpoint -= damage;
+            animator.SetTrigger("Take Damage");
+            if (hitpoint <= 0)
+            {
+                hitpoint = 0;
+                animator.SetTrigger("Death");
+            this.GetComponent<Rigidbody>().useGravity = false;
+            playerCollider.isTrigger = true;
+
+
+            }
+    }
+    private void EventDeath()
+    {
+        Dead = true;
+        this.tag = "Untagged";
+    }
+    private void HealDamage(float heal)
+    {
+        hitpoint += heal;
+        if (hitpoint > maxHitPoint)
+        {
+            hitpoint = maxHitPoint;
+        }
+    }
+    private bool hasCollide = false;
+    private void OnTriggerEnter(Collider col)
+    {
+
+        if (col.tag == "Enemy")
+        {
+            if (hasCollide == false)
+            {
+                hasCollide = true;
+                col.SendMessage("TakeDamage", damage);
+            }
+        }
+    }
+    public void return1()
+    {
+        if (noOfClicks >= 2)
+        {
+            animator.SetBool("Attack2", true);
+        }
+        else
+        {
+            animator.SetBool("Attack1", false);
+            noOfClicks = 0;
+
+        }
+    }
+
+    public void return2()
+    {
+        if (noOfClicks >= 3)
+        {
+            animator.SetBool("Attack3", true);
+        }
+        else
+        {
+            animator.SetBool("Attack2", false);
+            noOfClicks = 0;
+
+        }
+    }
+
+    public void return3()
+    {
+        animator.SetBool("Attack1", false);
+        animator.SetBool("Attack2", false);
+        animator.SetBool("Attack3", false);
+
+        noOfClicks = 0;
+    }
+
+    private void LateUpdate()
+    {
+        hasCollide = false;
+    }
+
 }
