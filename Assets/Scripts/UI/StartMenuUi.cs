@@ -25,7 +25,7 @@ public class StartMenuUi : MonoBehaviour
     }
     void StartButtonClicked()
     {
-        Debug.Log("StartButtonClicked");
+        SystemManager.getInstance().changeCurrentGameSate();
     }
 
     void OptionButtonClicked()

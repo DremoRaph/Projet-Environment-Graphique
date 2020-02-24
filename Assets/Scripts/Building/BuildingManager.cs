@@ -139,6 +139,7 @@ public class BuildingManager : MonoBehaviour
 
         GameObject instanceObjectToBuild = Instantiate(objectToBuild[indexObjectToBuild], buildingPosition, Quaternion.identity);
 
+
         SpaceTaken instanceSpace;
 
         instanceSpace.X = new Vector2(( buildingSizeX / 2 ) + buildingPosition.x, buildingPosition.x  - ( buildingSizeX / 2 ));
@@ -155,7 +156,11 @@ public class BuildingManager : MonoBehaviour
         //this.indexObjectToBuild = indexObjectToBuild;
         objectPosPreview = Instantiate(objectToBuild[indexObjectToBuild]);
         objectPosPreview.name = "objectPosPreview";
-        objectPosPreview.GetComponent<Collider>().isTrigger = true;
+        Collider[] colliders = objectPosPreview.GetComponentsInChildren<Collider>();
+        foreach (Collider item in colliders)
+        {
+            item.isTrigger = true;
+        }
         Transform buildingZone = objectPosPreview.transform.Find("BuildingZone");
         buildingSizeX = buildingZone.localScale.x;
         buildingSizeZ = buildingZone.localScale.z;

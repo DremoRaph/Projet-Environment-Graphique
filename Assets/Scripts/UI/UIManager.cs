@@ -2,20 +2,20 @@
 
 public class UIManager : MonoBehaviour
 {
+    [SerializeField]
     GameObject startMenuCanvas;
+    [SerializeField]
     GameObject loadingCanvas;
+    [SerializeField]
     GameObject inGameCanvas;
 
-    public enum GameState { START, LOADING, INGAME };
+
 
     [SerializeField]
-    GameState currentGameState;
+    SystemManager.SystemState currentGameState;
 
     void Start()
     {
-        startMenuCanvas = transform.Find("Start_Menu_Canvas").gameObject;
-        loadingCanvas = transform.Find("Loading_Canvas").gameObject;
-        inGameCanvas = transform.Find("In_Game_Canvas").gameObject;
         changeActiveUI();
     }
 
@@ -24,17 +24,17 @@ public class UIManager : MonoBehaviour
 
         switch (currentGameState)
         {
-            case GameState.START:
+            case SystemManager.SystemState.START:
                 startMenuCanvas.SetActive(true);
                 loadingCanvas.SetActive(false);
                 inGameCanvas.SetActive(false);
                 break;
-            case GameState.LOADING:
+            case SystemManager.SystemState.LOADING:
                 startMenuCanvas.SetActive(false);
                 loadingCanvas.SetActive(true);
                 inGameCanvas.SetActive(false);
                 break;
-            case GameState.INGAME:
+            case SystemManager.SystemState.INGAME:
                 startMenuCanvas.SetActive(false);
                 loadingCanvas.SetActive(false);
                 inGameCanvas.SetActive(true);
@@ -42,7 +42,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    void setCurrentGameState(GameState newGameState)
+    public void setCurrentGameState(SystemManager.SystemState newGameState)
     {
         this.currentGameState = newGameState;
         changeActiveUI();

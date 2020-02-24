@@ -121,6 +121,24 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &1291449734 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4314231972857487973, guid: 8cc08b1a290fae24a91f21a092785878,
+    type: 3}
+  m_PrefabInstance: {fileID: 4314231974050031984}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1317122652 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4314231972949446016, guid: 8cc08b1a290fae24a91f21a092785878,
+    type: 3}
+  m_PrefabInstance: {fileID: 4314231974050031984}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1497711882 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4314231973034804785, guid: 8cc08b1a290fae24a91f21a092785878,
+    type: 3}
+  m_PrefabInstance: {fileID: 4314231974050031984}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4314231974050031984
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -128,6 +146,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 265357446005001625, guid: 8cc08b1a290fae24a91f21a092785878,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1076648728481698753, guid: 8cc08b1a290fae24a91f21a092785878,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.19995117
+      objectReference: {fileID: 0}
+    - target: {fileID: 1076648728481698753, guid: 8cc08b1a290fae24a91f21a092785878,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.3249817
+      objectReference: {fileID: 0}
+    - target: {fileID: 1137729334632883672, guid: 8cc08b1a290fae24a91f21a092785878,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4314231972543893987, guid: 8cc08b1a290fae24a91f21a092785878,
         type: 3}
       propertyPath: m_Name
@@ -186,6 +224,56 @@ PrefabInstance:
     - target: {fileID: 4314231972543893988, guid: 8cc08b1a290fae24a91f21a092785878,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4314231972543893989, guid: 8cc08b1a290fae24a91f21a092785878,
+        type: 3}
+      propertyPath: currentGameState
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4314231972543893989, guid: 8cc08b1a290fae24a91f21a092785878,
+        type: 3}
+      propertyPath: startMenuCanvas
+      value: 
+      objectReference: {fileID: 1497711882}
+    - target: {fileID: 4314231972543893989, guid: 8cc08b1a290fae24a91f21a092785878,
+        type: 3}
+      propertyPath: loadingCanvas
+      value: 
+      objectReference: {fileID: 1317122652}
+    - target: {fileID: 4314231972543893989, guid: 8cc08b1a290fae24a91f21a092785878,
+        type: 3}
+      propertyPath: inGameCanvas
+      value: 
+      objectReference: {fileID: 1291449734}
+    - target: {fileID: 4314231972724337230, guid: 8cc08b1a290fae24a91f21a092785878,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.14801025
+      objectReference: {fileID: 0}
+    - target: {fileID: 4314231972949446016, guid: 8cc08b1a290fae24a91f21a092785878,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4314231973034804785, guid: 8cc08b1a290fae24a91f21a092785878,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4314231973755138304, guid: 8cc08b1a290fae24a91f21a092785878,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4314231974349483761, guid: 8cc08b1a290fae24a91f21a092785878,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6493285147876051594, guid: 8cc08b1a290fae24a91f21a092785878,
+        type: 3}
+      propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
