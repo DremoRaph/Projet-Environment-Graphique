@@ -8,6 +8,7 @@ public class EnenyController : MonoBehaviour
 
     Transform targetPlayer;
     BoxCollider targetHeart;
+    GameObject[] ListMinion;
     public float lookRadiusPlayer = 5f;
     NavMeshAgent agent;
     // Start is called before the first frame update
@@ -37,9 +38,27 @@ public class EnenyController : MonoBehaviour
     {
         if (!Dead)
         {
-            float distancePlayer = PlayerManager.instance.player==null? float.PositiveInfinity: Vector3.Distance(targetPlayer.position, transform.position);
+            ListMinion = GameObject.FindGameObjectsWithTag("Minion");
+            float distanceMinion = Vector3.Distance(this.transform.position, FindClosestMinion().transform.position);
+            float distancePlayer = Vector3.Distance(targetPlayer.position, transform.position);
             float distanceHeart = Vector3.Distance(targetHeart.ClosestPoint(this.transform.position), this.transform.position);
-            if (distancePlayer <= lookRadiusPlayer && distancePlayer <= distanceHeart && PlayerManager.instance.player.tag=="Player")
+            if (distanceMinion <= distanceHeart)
+            {
+                agent.SetDestination(FindClosestMinion().transform.position);
+                anim.SetBool("Walk Forward", true);
+                if (distanceMinion <= agent.stoppingDistance)
+                {
+                    FaceTargetMinion();
+                    AttackDelay -= Time.deltaTime;
+                    if (AttackDelay > 1.0f)
+                    {
+                        Attack();
+                        AttackDelay = AttackReset;
+                    }
+                    anim.SetBool("Walk Forward", false);
+                }
+            }
+            else if (distancePlayer <= lookRadiusPlayer && distancePlayer <= distanceHeart && PlayerManager.instance.player.tag=="Player")
             {
                 agent.SetDestination(targetPlayer.position);
                 anim.SetBool("Walk Forward", true);
@@ -107,6 +126,13 @@ public class EnenyController : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
         anim.SetBool("Walk Forward", false);
     }
+    void FaceTargetMinion()
+    {
+        Vector3 direction = (FindClosestMinion().transform.position - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+        anim.SetBool("Walk Forward", false);
+    }
     private void TakeDamage(float damage)
     {
         if (!Dead)
@@ -117,6 +143,7 @@ public class EnenyController : MonoBehaviour
             {
                 hitpoint = 0;
                 anim.SetTrigger("Die");
+                this.tag = "Untagged";
 
 
             }
@@ -174,5 +201,28 @@ public class EnenyController : MonoBehaviour
     private void LateUpdate()
     {
         hasCollide = false;
+    }
+    public GameObject FindClosestMinion()
+    {
+        
+            float distanceMin = 0;
+            int i = 0;
+            GameObject target = null;
+            while (i < ListMinion.Length)
+            {
+                if (distanceMin >= Vector3.Distance(this.transform.position, ListMinion[i].transform.position) || distanceMin == 0)
+                {
+                    distanceMin = Vector3.Distance(this.transform.position, ListMinion[i].transform.position);
+                    target = ListMinion[i];
+                    i++;
+                }
+                else
+                {
+                    i += 1;
+                }
+
+            }
+            return target;
+        
     }
 }
