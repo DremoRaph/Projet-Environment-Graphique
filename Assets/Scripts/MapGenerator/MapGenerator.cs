@@ -3,6 +3,7 @@ using System.Collections;
 using System;
 using System.Threading;
 using System.Collections.Generic;
+using UnityEngine.AI;
 
 
 public class MapGenerator : MonoBehaviour
@@ -34,6 +35,8 @@ public class MapGenerator : MonoBehaviour
 
     Queue<MapThreadInfo<MapData>> mapDataThreadInfoQueue = new Queue<MapThreadInfo<MapData>>();
 
+    List<GameObject> map =  new List<GameObject>();
+
     public void DrawMapInEditor()
     {
         MapData mapData = GenerateMapData();
@@ -49,6 +52,7 @@ public class MapGenerator : MonoBehaviour
         else if (drawMode == DrawMode.Mesh)
         {
             display.DrawMesh(MeshGenerator.GenerateTerrainMesh(mapData.heightMap, meshHeightMultiplier, meshHeightCurve, levelOfDetail), TextureGenerator.TextureFromColourMap(mapData.colourMap, mapChunkSize, mapChunkSize));
+            
             
         }
     }
