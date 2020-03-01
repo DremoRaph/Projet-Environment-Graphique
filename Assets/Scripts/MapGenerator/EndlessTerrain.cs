@@ -37,7 +37,7 @@ public class EndlessTerrain : MonoBehaviour
 
     private void Update()
     {
-        viewerPosition = new Vector2(viewer.position.x, viewer.position.z)/2f;
+        viewerPosition = new Vector2(viewer.position.x, viewer.position.z)/scale;
         if ((oldViewerPosition - viewerPosition).sqrMagnitude > sqrViewerMoveThresholdForChunkUpdate)
         {
             oldViewerPosition = viewerPosition;
