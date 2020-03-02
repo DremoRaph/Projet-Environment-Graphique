@@ -96,6 +96,8 @@ public class EnenyController : MonoBehaviour
         }
         else
         {
+            anim.SetBool("Walk Forward", false);
+
             DestroyTimer -= Time.deltaTime;
             if (DestroyTimer <= 0.0f)
             {
