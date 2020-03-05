@@ -4,7 +4,8 @@ using UnityEngine;
 
 public static class FalloffGenerator
 {
-    public static float [,] GenerateFalloffMap(int size)
+
+    public static float[,] GenerateFalloffMap(int size)
     {
         float[,] map = new float[size, size];
 
@@ -19,6 +20,7 @@ public static class FalloffGenerator
                 map[i, j] = Evaluate(value);
             }
         }
+
         return map;
     }
 
@@ -27,6 +29,7 @@ public static class FalloffGenerator
         float a = 3f;
         float b = 2.2f;
 
-        return Mathf.Pow(value, a) / (Mathf.Pow(value, a) + Mathf.Pow(b - b * value, a));
+        return Mathf.Pow(value, a) / ( Mathf.Pow(value, a) + Mathf.Pow(b - b * value, a) );
     }
+
 }
