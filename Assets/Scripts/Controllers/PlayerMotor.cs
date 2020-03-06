@@ -34,6 +34,11 @@ public class PlayerMotor : MonoBehaviour
     public GameObject RespawnPoint;
     public float TimeToRespawn = 10f;
     public float TimeToRespawnReset = 10f;
+    public float speedH = 2.0f;
+    public float speedV = 2.0f;
+    float pitch = 0.0f;
+    float yawn = 0.0f;
+    public GameObject cam;
 
 
 
@@ -57,6 +62,8 @@ public class PlayerMotor : MonoBehaviour
         {
             animator.SetBool("IsRunning", false);
             animator.SetBool("IsJumping", false);
+            animator.SetBool("Strafe Droite", false);
+            animator.SetBool("Strafe Gauche", false);
             // Si on n'avance et ne recule pas 
             if (!Input.GetKey(inputFront) && !Input.GetKey(inputBack))
             {
@@ -88,23 +95,29 @@ public class PlayerMotor : MonoBehaviour
                 animator.SetFloat("vertical", 1);
 
             }
-
-
-            //Tourner a droite
-            if (Input.GetKey(inputRight)) {
-                transform.Rotate(0, turnSpeed * Time.deltaTime, 0);
-                animator.SetFloat("vertical", 1);
-                animator.SetFloat("horizontal", 1);
-
+             //Bouger a droite
+             if(Input.GetKey(inputRight) && !Input.GetKey(KeyCode.LeftShift))
+             {
+                transform.Translate(walkSpeed * Time.deltaTime, 0, 0);
+                animator.SetBool("Strafe Droite", true);
+             }
+             if(Input.GetKey(inputLeft) && !Input.GetKey(KeyCode.LeftShift)) 
+            {
+                transform.Translate(-(walkSpeed * Time.deltaTime), 0, 0);
+                animator.SetBool("Strafe Gauche", true);
             }
-            //Tourner a gauche
-            if (Input.GetKey(inputLeft)) {
-                transform.Rotate(0, -turnSpeed * Time.deltaTime, 0);
-                animator.SetFloat("vertical", 1);
-                animator.SetFloat("horizontal", -1);
 
+            //Tourner la camera
+            
+            yawn += speedH * Input.GetAxis("Mouse X");
+            pitch += speedV * Input.GetAxis("Mouse Y");
+            transform.eulerAngles = new Vector3(0, yawn, 0);
+            
+            cam.transform.eulerAngles = new Vector3(- Mathf.Clamp(pitch,-30,30), yawn, 0);
+            
 
-            }
+            
+
             // Si on saute
             if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
             {
@@ -167,8 +180,8 @@ public class PlayerMotor : MonoBehaviour
     private void EventDeath()
     {
         Dead = true;
-        this.tag = "Untagged";
-        this.GetComponent<Rigidbody>().useGravity = false;
+        tag = "Untagged";
+        GetComponent<Rigidbody>().useGravity = false;
         playerCollider.isTrigger = true;
     }
     private void EventRevive()

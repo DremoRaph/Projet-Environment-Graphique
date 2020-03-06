@@ -7,23 +7,22 @@ public class EnenyController : MonoBehaviour
 {
 
     Transform targetPlayer;
-    BoxCollider targetHeart;
+    protected BoxCollider targetHeart;
     GameObject[] ListMinion;
     public float lookRadiusPlayer = 5f;
-    NavMeshAgent agent;
-    // Start is called before the first frame update
-    public float hitpoint = 500;
-    private float maxHitPoint = 500;
-    Animator anim;
-    float damage = 10;
-    bool Dead = false;
-    float DestroyTimer = 10f;
+    protected NavMeshAgent agent;
+    public float hitpoint = 100;
+    protected float maxHitPoint = 100;
+    protected Animator anim;
+    protected float damage = 10;
+    public bool Dead = false;
+    protected float DestroyTimer = 10f;
     public float AttackDelay = 1.5f;
-    float AttackReset = 1.5f;
+    protected float AttackReset = 1.5f;
     public BoxCollider horn;
 
 
-    void Start()
+    protected void Start()
     {
         targetPlayer = PlayerManager.instance.player.transform;
         targetHeart = PlayerManager.instance.heart.GetComponent<BoxCollider>();
@@ -42,7 +41,7 @@ public class EnenyController : MonoBehaviour
             float distanceMinion = Vector3.Distance(this.transform.position, FindClosestMinion().transform.position);
             float distancePlayer = Vector3.Distance(targetPlayer.position, transform.position);
             float distanceHeart = Vector3.Distance(targetHeart.ClosestPoint(this.transform.position), this.transform.position);
-            if (distanceMinion <= distanceHeart)
+            if (distanceMinion <= distanceHeart && distancePlayer > lookRadiusPlayer)
             {
                 agent.SetDestination(FindClosestMinion().transform.position);
                 anim.SetBool("Walk Forward", true);
@@ -66,7 +65,7 @@ public class EnenyController : MonoBehaviour
                 {
                     FaceTargetPlayer();
                     AttackDelay -= Time.deltaTime;
-                    if (AttackDelay > 1.0f)
+                    if (AttackDelay <= 0.0f)
                     {
                         Attack();
                         AttackDelay = AttackReset;
@@ -78,7 +77,7 @@ public class EnenyController : MonoBehaviour
 
             else
             {
-                agent.SetDestination(targetHeart.ClosestPoint(this.transform.position));
+                agent.SetDestination(targetHeart.ClosestPoint(transform.position));
                 anim.SetBool("Walk Forward", true);
                 if (distanceHeart <= agent.stoppingDistance)
                 {
@@ -96,17 +95,17 @@ public class EnenyController : MonoBehaviour
         }
         else
         {
-            anim.SetBool("Walk Forward", false);
+                anim.SetBool("Walk Forward", false);
 
-            DestroyTimer -= Time.deltaTime;
-            if (DestroyTimer <= 0.0f)
-            {
-                Destroy(gameObject);
-            }
-            else
-            {
-                return;
-            }
+                DestroyTimer -= Time.deltaTime;
+                if (DestroyTimer <= 0.0f)
+                {
+                    Destroy(gameObject);
+                }
+                else
+                {
+                    return;
+                }
         }
     }
     void OnDrawGizmosSelected()
@@ -121,7 +120,7 @@ public class EnenyController : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
         anim.SetBool("Walk Forward", false);
     }
-    void FaceTargetHeart()
+   protected void FaceTargetHeart()
     {
         Vector3 direction = (targetHeart.ClosestPoint(this.transform.position) - transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
@@ -135,7 +134,7 @@ public class EnenyController : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
         anim.SetBool("Walk Forward", false);
     }
-    private void TakeDamage(float damage)
+    protected void TakeDamage(float damage)
     {
         if (!Dead)
         {
@@ -145,7 +144,7 @@ public class EnenyController : MonoBehaviour
             {
                 hitpoint = 0;
                 anim.SetTrigger("Die");
-                this.tag = "Untagged";
+                tag = "Untagged";
 
 
             }
@@ -165,13 +164,13 @@ public class EnenyController : MonoBehaviour
             hitpoint = maxHitPoint;
         }
     }
-    private void EventDestroy()
+    protected void EventDestroy()
     {
         Dead = true;
-        CapsuleCollider collider = GetComponent<CapsuleCollider>();
+        Collider collider = GetComponent<Collider>();
         collider.isTrigger = true;
     }
-    private void Attack()
+    protected void Attack()
     {
         int attack = Random.Range(0, 3);
         if(attack == 1)
@@ -188,19 +187,26 @@ public class EnenyController : MonoBehaviour
         }
     }
     public bool hasCollide = false;
-    private void OnTriggerEnter(Collider col)
+    protected void OnTriggerEnter(Collider col)
     {
-
-        if (col.tag == "Player" || col.tag == "Heart")
+        if (!Dead)
         {
-            if (hasCollide == false)
+
+            if (col.tag == "Player" || col.tag == "Heart" || col.tag == "Minion")
             {
-                hasCollide = true;
-                col.SendMessage("TakeDamage", damage);
+                if (hasCollide == false)
+                {
+                    hasCollide = true;
+                    col.SendMessage("TakeDamage", damage);
+                }
             }
         }
+        else
+        {
+            return;
+        }
     }
-    private void LateUpdate()
+    protected void LateUpdate()
     {
         hasCollide = false;
     }

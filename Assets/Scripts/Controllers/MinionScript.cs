@@ -8,17 +8,16 @@ public class MinionScript : MonoBehaviour
 {
     GameObject [] ListEnemy;
     NavMeshAgent agent;
-    public float hitpoint = 500;
-    private float maxHitPoint = 500;
+    public float hitpoint = 50;
     Animator anim;
     public bool CollisionWithMinion;
-    float damage = 100;
-    bool Dead = false;
+    float damage = 10;
+    public bool Dead = false;
     float DestroyTimer = 10f;
     public float AttackDelay = 1.5f;
     float AttackReset = 1.5f;
     int range = 30;
-    bool hasCollide = false;
+    public bool hasCollide = false;
     Vector3 heart;
    
     // Start is called before the first frame update
@@ -32,38 +31,57 @@ public class MinionScript : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {   
-        ListEnemy = GameObject.FindGameObjectsWithTag("Enemy");
-        if (ListEnemy.Length > 0)
+    {   if (!Dead)
         {
-            agent.SetDestination(FindTarget().transform.position);
-            anim.SetBool("Run", true);
-            if (Vector3.Distance(FindTarget().transform.position, transform.position) <= agent.stoppingDistance)
+            ListEnemy = GameObject.FindGameObjectsWithTag("Enemy");
+            if (ListEnemy.Length > 0)
+            {
+                agent.SetDestination(FindTarget().transform.position);
+                anim.SetBool("Run", true);
+                if (Vector3.Distance(FindTarget().transform.position, transform.position) <= agent.stoppingDistance)
+                {
+                    anim.SetBool("Run", false);
+                    FaceTarget();
+                    AttackDelay -= Time.deltaTime;
+                    if (AttackDelay <= 0.0f)
+                    {
+                        Shoot();
+                        AttackDelay = AttackReset;
+                    }
+
+                }
+            }
+            else
+            {
+
+                anim.SetBool("Run", true);
+                FaceTargetHeart();
+                agent.SetDestination(heart);
+
+                if (Vector3.Distance(transform.position, heart) <= agent.stoppingDistance)
+                {
+                    agent.isStopped = true;
+                    anim.SetBool("Run", false);
+                }
+            }
+
+            if (agent.velocity.magnitude < 0.1f)
             {
                 anim.SetBool("Run", false);
-                FaceTarget();
-                anim.SetTrigger("Shoot");
-                Shoot();
-
             }
         }
         else
         {
-
-            anim.SetBool("Run", true);
-            FaceTargetHeart();
-            agent.SetDestination(heart);
-            
-            if (Vector3.Distance(transform.position, heart) <= agent.stoppingDistance)
-            {   
-                agent.isStopped = true;
-                anim.SetBool("Run", false);
+            DestroyTimer -= Time.deltaTime;
+            if (DestroyTimer <= 0.0f)
+            {
+                Destroy(gameObject);
             }
-        }
+            else
+            {
+                return;
+            }
 
-        if(agent.velocity.magnitude < 0.1f)
-        {
-            anim.SetBool("Run", false);
         }
     }
     private void LateUpdate()
@@ -93,9 +111,16 @@ public class MinionScript : MonoBehaviour
     }
     void FaceTarget()
     {
-        Vector3 direction = (FindTarget().transform.position - transform.position).normalized;
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+        if (!Dead)
+        {
+            Vector3 direction = (FindTarget().transform.position - transform.position).normalized;
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+        }
+        else
+        {
+            return;
+        }
     }
     void Shoot()
     {
@@ -106,6 +131,7 @@ public class MinionScript : MonoBehaviour
             if (hasCollide == false)
             {
                 hasCollide = true;
+                anim.SetTrigger("Shoot");
                 hit.collider.GetComponentInParent<EnenyController>().SendMessage("TakeDamage", damage);
 
             }
@@ -119,18 +145,30 @@ public class MinionScript : MonoBehaviour
     }
 
 
-    private void OnCollisionEnter(Collision collision)
+    private void TakeDamage(float damage)
     {
-        if (collision.gameObject.tag == "Minion")
+        if (!Dead)
         {
-            CollisionWithMinion = true;
-        }
-    }
-    private void OnCollisionExit(Collision collision)
-    { if (collision.gameObject.tag == "Minion")
-        {
-            CollisionWithMinion = false;
-        }
-    }
+            hitpoint -= damage;
+            if (hitpoint <= 0)
+            {
+                hitpoint = 0;
+                anim.SetTrigger("Die");
+                tag = "Untagged";
 
+
+            }
+        }
+        else
+        {
+            return;
+        }
+
+    }
+    private void EventDestroy()
+    {
+        Dead = true;
+        CapsuleCollider collider = GetComponent<CapsuleCollider>();
+        collider.isTrigger = true;
+    }
 }
