@@ -1,32 +1,31 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 
 public class UpdatableData : ScriptableObject
 {
 
-    public event System.Action OnvaluesUpdated;
-    public bool autoUpdate;
+	public event System.Action OnValuesUpdated;
+	public bool autoUpdate;
 
+#if UNITY_EDITOR
 
-    #if UNITY_EDITOR
+	protected virtual void OnValidate()
+	{
+		if (autoUpdate)
+		{
+			UnityEditor.EditorApplication.update += NotifyOfUpdatedValues;
+		}
+	}
 
-    protected virtual void OnValidate()
-    {
-        if (autoUpdate)
-        {
-            UnityEditor.EditorApplication.update += NotifyOfUpadtedValues;
-        }
-    }
+	public void NotifyOfUpdatedValues()
+	{
+		UnityEditor.EditorApplication.update -= NotifyOfUpdatedValues;
+		if (OnValuesUpdated != null)
+		{
+			OnValuesUpdated();
+		}
+	}
 
-    public void NotifyOfUpadtedValues()
-    {
-        UnityEditor.EditorApplication.update -= NotifyOfUpadtedValues;
-        if (OnvaluesUpdated != null)
-        {
-            OnvaluesUpdated();
-        }
-    }
+#endif
 
-    #endif
 }
