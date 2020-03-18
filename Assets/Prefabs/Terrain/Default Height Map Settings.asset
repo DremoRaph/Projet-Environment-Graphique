@@ -15,13 +15,13 @@ MonoBehaviour:
   autoUpdate: 1
   noiseSettings:
     normalizeMode: 1
-    scale: 50
+    scale: 60
     octaves: 6
-    persistance: 0.6
+    persistance: 0.549
     lacunarity: 2
     seed: 0
     offset: {x: 0, y: 0}
-  useFalloff: 0
+  useFalloff: 1
   heightMultiplier: 50
   heightCurve:
     serializedVersion: 2
@@ -35,6 +35,15 @@ MonoBehaviour:
       weightedMode: 0
       inWeight: 0
       outWeight: 0
+    - serializedVersion: 3
+      time: 0.24317291
+      value: 0.29685116
+      inSlope: 0.22025214
+      outSlope: 0.22025214
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.0656547
     - serializedVersion: 3
       time: 1
       value: 1
