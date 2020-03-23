@@ -15,6 +15,7 @@ public class BuildingManager : MonoBehaviour
 	List<GameObject> objectToBuild;
 	[SerializeField]
 	int indexObjectToBuild;
+
 	GameObject objectPosPreview;
 
 	[SerializeField]
@@ -151,9 +152,10 @@ public class BuildingManager : MonoBehaviour
 	}
 
 
-	void changeObjectToBuild(/*int indexObjectToBuild*/)
+	public void changeObjectToBuild(/*int indexObjectToBuild*/)
 	{
 		Destroy(objectPosPreview);
+
 		//this.indexObjectToBuild = indexObjectToBuild;
 		objectPosPreview = Instantiate(objectToBuild[indexObjectToBuild]);
 		objectPosPreview.name = "objectPosPreview";

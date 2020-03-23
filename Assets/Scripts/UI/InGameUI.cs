@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class InGameUI : MonoBehaviour
 {
     /* -- buttons -- */
-    [Header("Ressources fields")]
+    [Header("ButtonS")]
     [SerializeField]
     Button SwapModeButton;
 
@@ -15,10 +15,7 @@ public class InGameUI : MonoBehaviour
     [SerializeField]
     Text textSearchAvailable;
 
-    [Header("Ressources values")]
-    [SerializeField]
     int valueGoldAvailable;
-    [SerializeField]
     int valueSearchAvailable;
 
     /* -- units -- */
@@ -68,9 +65,9 @@ public class InGameUI : MonoBehaviour
         this.valueGoldAvailable = goldValue;
     }
 
-    void setValueSearchAvailable(int SearchValue)
+    void setValueSearchAvailable(int searchValue)
     {
-        this.valueSearchAvailable = SearchValue;
+        this.valueSearchAvailable = searchValue;
     }
 
     void setValueHealthBarFill(int healthValue)
