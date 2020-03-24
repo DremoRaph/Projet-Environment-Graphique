@@ -7,15 +7,19 @@ public class Tower : Building
 	int attackDamages;
 
 	float attackRange;
-
-	float attackRate;
-
-	
 	SphereCollider attackZone;
 
+	float attackRate;
+	float timeBeforeAttack = 0f;
+
+	float projectileForce;
+
 	[SerializeField]
+	Transform attackStartPoint;
+
+	GameObject projectilePrefab;
+
 	List<GameObject> targetsAvaillable = new List<GameObject>();
-	[SerializeField]
 	int indexCurrentTarget = -1;
 
 	public void Start()
@@ -23,9 +27,36 @@ public class Tower : Building
 		attackDamages = ( (TowerSettings) buildingSettings ).getStartDamages();
 		attackRange = ( (TowerSettings) buildingSettings ).getStartRange();
 		attackRate = ( (TowerSettings) buildingSettings ).getStartRate();
+		projectileForce = ( (TowerSettings) buildingSettings ).getProjectileForce();
+		projectilePrefab = ( (TowerSettings) buildingSettings ).getProjectilePrefab(); ;
 
-		CreateAttackZone();
+	CreateAttackZone();
 	}
+
+	private void FixedUpdate()
+	{
+		timeBeforeAttack -= Time.deltaTime;
+
+		if (timeBeforeAttack <= 0f && indexCurrentTarget != -1)
+		{
+			Attack();
+		}
+	}
+
+	void Attack()
+	{
+		timeBeforeAttack = attackRate;
+
+		GameObject projectile = Instantiate(projectilePrefab, attackStartPoint.position, attackStartPoint.rotation);
+		projectile.GetComponent<Projectile>().damages = attackDamages;
+		projectile.GetComponent<Projectile>().target = targetsAvaillable[indexCurrentTarget];
+		Rigidbody rb = projectile.GetComponent<Rigidbody>();
+
+		Vector3 direction = targetsAvaillable[indexCurrentTarget].transform.position - attackStartPoint.position;
+		rb.AddForce(direction * projectileForce, ForceMode.Impulse);
+
+	}
+
 
 	void CreateAttackZone()
 	{

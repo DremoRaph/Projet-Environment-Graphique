@@ -17,8 +17,16 @@ public class TowerSettings : BuildingSettings
     float startRange;
 
     [SerializeField]
-    [Range(0, 10000)]
+    [Range(0, 100)]
     float startRate;
+
+    [SerializeField]
+    [Range(0, 50)]
+    float projectileForce;
+
+    [SerializeField]
+    GameObject projectilePrefab;
+
 
     public int getStartDamages()
     {
@@ -33,5 +41,15 @@ public class TowerSettings : BuildingSettings
     public float getStartRate()
     {
         return startRate;
+    }
+
+    public float getProjectileForce()
+    {
+        return projectileForce;
+    } 
+    
+    public GameObject getProjectilePrefab()
+    {
+        return projectilePrefab;
     }
 }

@@ -157,14 +157,10 @@ public class BuildingManager : MonoBehaviour
 		Destroy(objectPosPreview);
 
 		//this.indexObjectToBuild = indexObjectToBuild;
-		objectPosPreview = Instantiate(objectToBuild[indexObjectToBuild]);
+		objectPosPreview = Instantiate(objectToBuild[indexObjectToBuild].transform.Find("BuildingZone").gameObject);
 		objectPosPreview.name = "objectPosPreview";
-		Collider[] colliders = objectPosPreview.GetComponentsInChildren<Collider>();
-		foreach (Collider item in colliders)
-		{
-			item.isTrigger = true;
-		}
-		Transform buildingZone = objectPosPreview.transform.Find("BuildingZone");
+		Collider collider = objectPosPreview.GetComponent<Collider>();
+		Transform buildingZone = objectPosPreview.transform;
 		buildingSizeX = buildingZone.localScale.x;
 		buildingSizeZ = buildingZone.localScale.z;
 	}

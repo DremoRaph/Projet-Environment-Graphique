@@ -154,7 +154,7 @@ MonoBehaviour:
   buildingSizeZ: 0
   camera: {fileID: 1605174397}
   objectToBuild:
-  - {fileID: 3036632663573815858, guid: 6143edd5d54fcca41ae484bea9c21967, type: 3}
+  - {fileID: 8263123953151151146, guid: 8a3739839441a124aaa8f5280aeb75e6, type: 3}
   indexObjectToBuild: 0
   goodPosMaterial: {fileID: 2100000, guid: 06ea68fe74bdbe640985cff663bdd308, type: 2}
   badPosMaterial: {fileID: 2100000, guid: 997654f958b21eb48870113618edf877, type: 2}

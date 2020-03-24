@@ -10,11 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a81204554ae131a46ac6553fe0159526, type: 3}
-  m_Name: New Tower Settings
+  m_Name: GunTower
   m_EditorClassIdentifier: 
-  buildingType: 0
+  buildingType: 1
   cost: 0
-  startHitPoints: 0
-  startDamages: 0
-  startRange: 0
-  startRate: 0
+  startHitPoints: 287
+  startDamages: 5
+  startRange: 10
+  startRate: 0.2
+  projectileForce: 5
+  projectilePrefab: {fileID: 4998753216095682788, guid: b1136ffb2111f6144a993ffa71c6af23,
+    type: 3}
