@@ -12,7 +12,7 @@ public class Tower : Building
 	float attackRate;
 	float timeBeforeAttack = 0f;
 
-	float projectileForce;
+	float projectileSpeed;
 
 	[SerializeField]
 	Transform attackStartPoint;
@@ -22,15 +22,38 @@ public class Tower : Building
 	List<GameObject> targetsAvaillable = new List<GameObject>();
 	int indexCurrentTarget = -1;
 
+
+
+	[SerializeField]
+	GameObject buildingZone;
+	[SerializeField]
+	GameObject pivotBase;
+	[SerializeField]
+	GameObject pivotGun;
+
 	public void Start()
 	{
 		attackDamages = ( (TowerSettings) buildingSettings ).getStartDamages();
 		attackRange = ( (TowerSettings) buildingSettings ).getStartRange();
 		attackRate = ( (TowerSettings) buildingSettings ).getStartRate();
-		projectileForce = ( (TowerSettings) buildingSettings ).getProjectileForce();
+		projectileSpeed = ( (TowerSettings) buildingSettings ).getProjectileSpeed();
 		projectilePrefab = ( (TowerSettings) buildingSettings ).getProjectilePrefab(); ;
 
-	CreateAttackZone();
+		CreateAttackZone();
+
+		buildingZone.SetActive(false);
+	}
+
+	private void Update()
+	{
+		if (indexCurrentTarget != -1)
+		{
+			pivotBase.transform.LookAt(targetsAvaillable[indexCurrentTarget].transform);
+			pivotBase.transform.eulerAngles = new Vector3(0, pivotBase.transform.eulerAngles.y, 0);
+
+			pivotGun.transform.LookAt(targetsAvaillable[indexCurrentTarget].transform);
+			pivotGun.transform.eulerAngles = new Vector3(pivotGun.transform.eulerAngles.x, 0, 0);
+		}
 	}
 
 	private void FixedUpdate()
@@ -47,13 +70,11 @@ public class Tower : Building
 	{
 		timeBeforeAttack = attackRate;
 
-		GameObject projectile = Instantiate(projectilePrefab, attackStartPoint.position, attackStartPoint.rotation);
-		projectile.GetComponent<Projectile>().damages = attackDamages;
-		projectile.GetComponent<Projectile>().target = targetsAvaillable[indexCurrentTarget];
-		Rigidbody rb = projectile.GetComponent<Rigidbody>();
+		GameObject projectile = 
+			Instantiate(projectilePrefab, attackStartPoint.position, attackStartPoint.rotation);
 
-		Vector3 direction = targetsAvaillable[indexCurrentTarget].transform.position - attackStartPoint.position;
-		rb.AddForce(direction * projectileForce, ForceMode.Impulse);
+		projectile.GetComponent<Projectile>()
+			.setProjectileValues(projectileSpeed, attackDamages, targetsAvaillable[indexCurrentTarget]);
 
 	}
 

@@ -137,10 +137,9 @@ public class BuildingManager : MonoBehaviour
 
 	void BuildObject()
 	{
-
-
 		GameObject instanceObjectToBuild = Instantiate(objectToBuild[indexObjectToBuild], buildingPosition, Quaternion.identity);
 
+		
 
 		SpaceTaken instanceSpace;
 
