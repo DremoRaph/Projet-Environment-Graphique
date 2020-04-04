@@ -17,7 +17,7 @@ MonoBehaviour:
   startHitPoints: 287
   startDamages: 5
   startRange: 10
-  startRate: 0.2
-  projectileForce: 5
+  startRate: 0.1
+  projectileSpeed: 20
   projectilePrefab: {fileID: 4998753216095682788, guid: b1136ffb2111f6144a993ffa71c6af23,
     type: 3}

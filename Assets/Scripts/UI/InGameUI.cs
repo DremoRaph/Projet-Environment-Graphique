@@ -1,12 +1,32 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class InGameUI : MonoBehaviour
 {
-    /* -- buttons -- */
-    [Header("ButtonS")]
+    GameManager gameManager;
+
+    /* -- canvas -- */
+    [Header("canvas")]
     [SerializeField]
-    Button SwapModeButton;
+    GameObject combatCanvas;
+    [SerializeField]
+    GameObject buildingCanvas;
+
+    /* -- buttons -- */
+    [Header("General buttons")]
+    [SerializeField]
+    Button swapPlayingStateButton;
+
+    [Header("Building buttons")]
+    [SerializeField]
+    Button towerBuildingButton;
+    [SerializeField]
+    Button unitSpawnerBuildingButton;
+    [SerializeField]
+    Button researchBuildingButton;
+    [SerializeField]
+    Button otherBuildingButton;
 
     /* -- ressources -- */
     [Header("Ressources fields")]
@@ -37,14 +57,72 @@ public class InGameUI : MonoBehaviour
     [SerializeField]
     int maxEnergieBarFill;
 
+    /* -- Building -- */
+    [Header("Building list")]
+    [SerializeField]
+    GameObject towerList;
+    [SerializeField]
+    GameObject unitSpawnerList;
+    [SerializeField]
+    GameObject researchList;
+    [SerializeField]
+    GameObject otherList;
+
+    private void Awake()
+    {
+
+    }
     void Start()
     {
-      
+
+        gameManager = GameManager.getInstance();
+        InitialiseButton();
+        
+    }
+
+    private void InitialiseButton()
+    {
+
+        swapPlayingStateButton.onClick.AddListener(SwapPlayingStateButtonClicked);
+
+        towerBuildingButton.onClick.AddListener(TowerBuildingButtonClicked);
+        unitSpawnerBuildingButton.onClick.AddListener(UnitSpawnerBuildingButtonClicked);
+        researchBuildingButton.onClick.AddListener(ResearchBuildingButtonClicked);
+        otherBuildingButton.onClick.AddListener(OtherBuildingButtonClicked);
+    }
+
+    private void SwapPlayingStateButtonClicked()
+    {
+        Debug.Log("SwapPlayingStateButtonClicked");
+        gameManager.SwapPlayingState();
+    }
+
+    private void TowerBuildingButtonClicked()
+    {
+        Debug.Log("TowerBuildingButtonClicked");
+        towerList.SetActive(!towerList.activeInHierarchy);
+    }
+
+    private void UnitSpawnerBuildingButtonClicked()
+    {
+        Debug.Log("UnitSpawnerBuildingButtonClicked");
+        unitSpawnerList.SetActive(!unitSpawnerList.activeInHierarchy);
+    }
+
+    private void ResearchBuildingButtonClicked()
+    {
+        Debug.Log("ResearchBuildingButtonClicked");
+        researchList.SetActive(!researchList.activeInHierarchy);
+    }
+
+    private void OtherBuildingButtonClicked()
+    {
+        Debug.Log("OtherBuildingButtonClicked");
+        otherList.SetActive(!otherList.activeInHierarchy);
     }
 
     void Update()
     {
-        UpdateRessoucesDisplay();
         UpdateUnitDisplay();
     }
 
@@ -60,37 +138,51 @@ public class InGameUI : MonoBehaviour
         energieBarFill.fillAmount = (float) valueEnergieBarFill / maxEnergieBarFill;
     }
 
-    void setValueGoldAvailable(int goldValue)
+    public void DisplayCombatUI()
+    {
+        combatCanvas.SetActive(true);
+        buildingCanvas.SetActive(false);
+    }
+
+    public void DisplayBuildingUI()
+    {
+        combatCanvas.SetActive(false);
+        buildingCanvas.SetActive(true);
+    }
+
+    public void setValueGoldAvailable(int goldValue)
     {
         this.valueGoldAvailable = goldValue;
+        UpdateRessoucesDisplay();
     }
 
-    void setValueSearchAvailable(int searchValue)
+    public void setValueSearchAvailable(int searchValue)
     {
         this.valueSearchAvailable = searchValue;
+        UpdateRessoucesDisplay();
     }
 
-    void setValueHealthBarFill(int healthValue)
+    public void setValueHealthBarFill(int healthValue)
     {
         this.valueHealthBarFill = healthValue;
     }
 
-    void setMaxHealthBarFill(int maxHealthValue)
+    public void setMaxHealthBarFill(int maxHealthValue)
     {
         this.maxHealthBarFill = maxHealthValue;
     }
 
-    void setValueEnergieBarFill(int energieValue)
+    public void setValueEnergieBarFill(int energieValue)
     {
         this.valueEnergieBarFill = energieValue;
     }
 
-    void setMaxEnergieBarFill(int maxEnergieValue)
+    public void setMaxEnergieBarFill(int maxEnergieValue)
     {
         this.maxEnergieBarFill = maxEnergieValue;
     }
 
-    void setUnitIcon(Sprite unitIcon)
+    public void setUnitIcon(Sprite unitIcon)
     {
         this.unitIcon.sprite = unitIcon;
     }

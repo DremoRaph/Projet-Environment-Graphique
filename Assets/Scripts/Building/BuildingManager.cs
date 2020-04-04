@@ -6,8 +6,8 @@ using UnityEngine;
 public class BuildingManager : MonoBehaviour
 {
 
-	public float buildingSizeX;
-	public float buildingSizeZ;
+	float buildingSizeX;
+	float buildingSizeZ;
 
 	public Camera camera;
 
@@ -137,9 +137,7 @@ public class BuildingManager : MonoBehaviour
 
 	void BuildObject()
 	{
-		GameObject instanceObjectToBuild = Instantiate(objectToBuild[indexObjectToBuild], buildingPosition, Quaternion.identity);
-
-		
+		GameObject instanceObjectToBuild = Instantiate(objectToBuild[indexObjectToBuild], buildingPosition, Quaternion.identity);		
 
 		SpaceTaken instanceSpace;
 

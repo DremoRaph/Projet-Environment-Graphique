@@ -13,15 +13,16 @@ public class SystemManager : MonoBehaviour
     [SerializeField]
     SystemManager.SystemState currentGameState;
 
-    Scene UIScene;
+    Scene uiScene;
+    Scene inGameScene;
 
-    [SerializeField]
     UIManager uiManager;
+    GameManager GameManager;
 
     private void Awake()
     {
         instance = this;
-        UIScene = SceneManager.LoadScene("UI", new LoadSceneParameters(LoadSceneMode.Additive));
+        uiScene = SceneManager.LoadScene("UIScene", new LoadSceneParameters(LoadSceneMode.Additive));
     }
 
     // Start is called before the first frame update
@@ -29,7 +30,7 @@ public class SystemManager : MonoBehaviour
     {
         this.currentGameState = SystemState.START;
 
-        uiManager = FindObjectOfType<UIManager>();
+        uiManager = UIManager.getInstance();
         uiManager.setCurrentGameState(this.currentGameState);
 
     }
@@ -37,7 +38,10 @@ public class SystemManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(this.currentGameState == SystemState.LOADING && inGameScene.isLoaded)
+        {
+            OnLoadingOver();
+        }
     }
 
     public void changeCurrentGameSate()
@@ -45,6 +49,7 @@ public class SystemManager : MonoBehaviour
         switch (this.currentGameState)
         {
             case SystemState.START:
+                CreateInGameScene();
                 this.currentGameState = SystemState.LOADING;
                 break;
 
@@ -53,12 +58,29 @@ public class SystemManager : MonoBehaviour
                 break;
 
             case SystemState.INGAME:
+                DestroyInGameScene();
                 this.currentGameState = SystemState.START;
                 break;
         }
 
         uiManager.setCurrentGameState(this.currentGameState);
 
+    }
+
+    void CreateInGameScene()
+    {
+        inGameScene = SceneManager.LoadScene("InGameScene", new LoadSceneParameters(LoadSceneMode.Additive));
+
+    }
+
+    void DestroyInGameScene()
+    {
+        SceneManager.UnloadSceneAsync(inGameScene.buildIndex);
+    }
+
+    void OnLoadingOver()
+    {
+        changeCurrentGameSate();
     }
 
 }

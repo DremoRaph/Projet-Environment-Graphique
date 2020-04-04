@@ -20,4 +20,6 @@ public class LoadingUI : MonoBehaviour
     {
         loadingBarFill.fillAmount = (float) valueLoadingBarFill / 100;
     }
+
+   
 }

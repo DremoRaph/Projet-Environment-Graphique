@@ -2,6 +2,9 @@
 
 public class UIManager : MonoBehaviour
 {
+    private static UIManager instance;
+    public static UIManager getInstance() { return instance; }
+
     [SerializeField]
     GameObject startMenuCanvas;
     [SerializeField]
@@ -10,9 +13,13 @@ public class UIManager : MonoBehaviour
     GameObject inGameCanvas;
 
 
-
     [SerializeField]
     SystemManager.SystemState currentGameState;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     void Start()
     {
@@ -48,4 +55,8 @@ public class UIManager : MonoBehaviour
         changeActiveUI();
     }
 
+    public InGameUI getInGameUI()
+    {
+        return inGameCanvas.GetComponent<InGameUI>();
+    }
 }
